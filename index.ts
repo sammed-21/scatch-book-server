@@ -5,7 +5,7 @@ import cors from 'cors';
 
 const app = express();
 const isDev = app.settings.env === 'development';
-const URL = isDev ? 'http://localhost:3000' : 'http://localhost:3000';
+const URL = isDev ? 'http://localhost:3000' : 'https://scatch-book.vercel.app/';
 app.use(cors({origin: URL}));
 interface chageConfigs  {
     color?: string;
