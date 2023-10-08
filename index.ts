@@ -7,6 +7,7 @@ require('dotenv').config(); // Load environment variables from .env file
 const app = express();
 const isDev = app.settings.env === 'development';
  
+// const URL = isDev ?  'https://scatch-book.vercel.app':'http://localhost:3000' 
 const URL = isDev ? 'http://localhost:3000' : 'https://scatch-book.vercel.app';
  
 app.use(cors({origin: URL}));
