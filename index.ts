@@ -5,19 +5,34 @@ import cors from 'cors';
 require('dotenv').config(); // Load environment variables from .env file
 
 const app = express();
-const isDev = app.settings.env === 'development';
- 
+// const isDev = app.settings.env === 'development';
+ const isDev = process.env.NODE_ENV === 'development';
+const frontendURL = isDev ? 'http://localhost:3000' : 'https://scatch-book.vercel.app';
+
 // const URL = isDev ?  'https://scatch-book.vercel.app':'http://localhost:3000' 
-const URL = isDev ? 'http://localhost:3000' : 'https://scatch-book.vercel.app';
- 
-app.use(cors({origin: URL}));
+// const URL = isDev ? 'http://localhost:3000' : 'https://scatch-book.vercel.app';
+ const corsOptions = {
+  origin: frontendURL,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+// app.use(cors({origin: URL}));
+app.use(cors(corsOptions));
 interface chageConfigs  {
     color?: string;
     size?:number
 }
  
 const httpServer = createServer(app);
-const io = new SocketServer(httpServer, { cors: { origin: URL } });
+// const io = new SocketServer(httpServer, { cors: {corsOptions} });
+const io = new SocketServer(httpServer, {
+  cors: {
+    origin: frontendURL,
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+});
 
 io.on('connection', (socket: Socket) => {
   console.log('server connected');
