@@ -6,20 +6,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const http_1 = require("http");
 const socket_io_1 = require("socket.io");
-const cors_1 = __importDefault(require("cors"));
 require('dotenv').config(); // Load environment variables from .env file
 const app = (0, express_1.default)();
-const isDev = app.settings.env === 'development';
-const URL = isDev ? 'http://localhost:3000' : 'https://scatch-book.vercel.app/';
-app.use((0, cors_1.default)({ origin: URL }));
+// const isDev = app.settings.env === 'development';
+const isDev = process.env.NODE_ENV === 'development';
+const frontendURL = isDev ? 'http://localhost:3000' : 'https://scatch-book.vercel.app';
+// const URL = isDev ?  'https://scatch-book.vercel.app':'http://localhost:3000' 
+// const URL = isDev ? 'http://localhost:3000' : 'https://scatch-book.vercel.app';
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    next();
+});
 const httpServer = (0, http_1.createServer)(app);
-const io = new socket_io_1.Server(httpServer, { cors: { origin: URL } });
+const io = new socket_io_1.Server(httpServer, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+        credentials: true,
+    },
+});
 io.on('connection', (socket) => {
     console.log('server connected');
     socket.on('beginPath', (arg) => {
         socket.broadcast.emit('beginPath', arg);
     });
-    console.log(URL);
     socket.on('drawLine', (arg) => {
         socket.broadcast.emit('drawLine', arg);
     });
