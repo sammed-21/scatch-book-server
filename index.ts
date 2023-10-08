@@ -12,7 +12,7 @@ const frontendURL = isDev ? 'http://localhost:3000' : 'https://scatch-book.verce
 // const URL = isDev ?  'https://scatch-book.vercel.app':'http://localhost:3000' 
 // const URL = isDev ? 'http://localhost:3000' : 'https://scatch-book.vercel.app';
  app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', frontendURL);
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
