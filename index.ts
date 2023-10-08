@@ -26,7 +26,7 @@ interface chageConfigs {
 const httpServer = createServer(app);
 const io = new SocketServer(httpServer, {
   cors: {
-    origin: frontendURL,
+    origin: '*',
     methods: ['GET', 'POST'],
     credentials: true,
   },
